@@ -1,0 +1,56 @@
+name: Bump Version, Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install bumpversion
+        run: pip install bump2version
+
+      - name: Bump major version
+        run: bump2version major
+        env:
+          BUMPVERSION_FILE: "iota/main.py"
+
+      - name: Push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: bump version [skip ci]"
+          git push origin main
+
+  build-and-push:
+    needs: bump-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to GitHub Docker Registry
+        run: echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+
+      - name: Extract version
+        id: get_version
+        run: |
+          VERSION=$(grep -Po '(?<=current_version = )v\d+' bumpversion.cfg | head -1)
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
+      - name: Build Docker image
+        run: docker build --target prod -t ghcr.io/mariomm-marti/iota:${{ env.VERSION }} .
+
+      - name: Push Docker image
+        run: docker push ghcr.io/mariomm-marti/iota:${{ env.VERSION }}
