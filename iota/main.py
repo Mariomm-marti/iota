@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 
 
-VERSION = "v1"
+VERSION = "v2"
 
 
 app = FastAPI()
