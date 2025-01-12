@@ -1,4 +1,9 @@
 from fastapi import FastAPI, HTTPException
+from pydantic_settings import BaseSettings
+
+
+class IotaSettings(BaseSettings):
+    show_only_request_count: bool = False
 
 
 VERSION = "v1"
@@ -12,6 +17,10 @@ number_of_requests = 0
 async def root() -> dict:
     global number_of_requests
     number_of_requests += 1
+    if IotaSettings().show_only_request_count:
+        return {
+            "request_count": number_of_requests,
+        }
     return {
         "status": "OK",
         "app": "iota",
