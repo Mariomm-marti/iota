@@ -1,0 +1,82 @@
+# This is to override the chart name
+nameOverride: ""
+fullnameOverride: ""
+# IfNotPresent default
+imagePullPolicy: ""
+namespace: ""
+replicaCount: 1
+
+container:
+  args: {}
+  #args:
+  #  - "--host"
+  #  - "0.0.0.0"
+  #  - "--port"
+  #  - "80"
+  #  - "--workers"
+  #  - "4" 
+  env: {}
+  #env:
+  #  - name: "SHOW_ONLY_REQUEST_COUNT"
+  #    value: "False"
+
+# Implicit startupProbe
+livenessProbe:
+  failureThreshold: 3
+  periodSeconds: 5
+  terminationGracePeriodSeconds: 10
+  timeoutSeconds: 2
+  httpGet:
+    path: /health
+    port: http
+
+readinessProbe:
+  failureThreshold: 2
+  periodSeconds: 3
+  terminationGracePeriodSeconds: 10
+  timeoutSeconds: 2
+  httpGet:
+    path: /health
+    port: http
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 250m
+    memory: 250Mi
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: traefik
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: iota.ft-ingress.net
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+# HTTP active requests metric should be use, and probably setup with helm chart
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

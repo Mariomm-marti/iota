@@ -12,6 +12,11 @@ in an ArgoCD instance.
 
 As simple as that!
 
+## Limitations
+
+For simplicity reasons:
+* serviceaccounts are not supported.
+
 ## Contributing
 
 If for some extremely weird reason you believe a contribution can be helpful,
