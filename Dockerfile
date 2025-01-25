@@ -18,4 +18,4 @@ FROM base AS prod
 
 COPY iota/ /opt/iota
 ENTRYPOINT [ "/usr/bin/pipenv", "run", "uvicorn", "main:app" ]
-CMD [ "--host", "0.0.0.0", "--port", "80", "--workers", "4" ]
+CMD [ "--host", "0.0.0.0", "--port", "4242", "--workers", "4" ]
