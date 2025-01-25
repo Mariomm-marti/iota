@@ -35,14 +35,6 @@ spec:
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
-              hostPort: {{ .Values.service.hostPort | default 4242 }}
-              protocol: TCP
-          startupProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
-          livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
-          readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

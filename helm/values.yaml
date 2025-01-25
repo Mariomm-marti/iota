@@ -48,7 +48,7 @@ resources:
 
 service:
   type: ClusterIP
-  port: 4242
+  port: 80
 
 ingress:
   enabled: true
