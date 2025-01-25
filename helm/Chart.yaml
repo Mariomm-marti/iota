@@ -4,4 +4,4 @@ description: Simple CI/CD pipeline
 type: application
 version: 1.0.1
 
-appVersion: "v5"
+appVersion: "v6"
