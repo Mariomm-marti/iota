@@ -6,7 +6,7 @@ class IotaSettings(BaseSettings):
     show_only_request_count: bool = False
 
 
-VERSION = "v10"
+VERSION = "v11"
 
 
 app = FastAPI()
