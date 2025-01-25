@@ -19,7 +19,7 @@ spec:
       labels:
         {{- include "helm.labels" . | nindent 8 }}
     spec:
-      hostname: {{ .Chart.name }}
+      hostname: {{ .Chart.Name }}
       containers:
         - name: {{ .Chart.Name }}
           {{- if .Values.container.args }}
