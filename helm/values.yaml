@@ -33,7 +33,6 @@ livenessProbe:
 readinessProbe:
   failureThreshold: 2
   periodSeconds: 3
-  terminationGracePeriodSeconds: 10
   timeoutSeconds: 2
   httpGet:
     path: /health
